@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<title>VPN Servers</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('https://www.w3schools.com/w3images/forestbridge.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+</style>
+<body>
+
+<!-- Links (sit on top) -->
+<div class="w3-top">
+  <div class="w3-row w3-padding w3-black">
+    <div class="w3-col s3">
+      <a href="#" class="w3-button w3-block w3-black">HOME</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#escenarios" class="w3-button w3-block w3-black">ESCENARIOS</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#openvpn" class="w3-button w3-block w3-black">OpenVPN</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#sitetosite" class="w3-button w3-block w3-black">VPN SITE-TO-SITE</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#referencias" class="w3-button w3-block w3-black">REFERENCIAS</a>
+    </div>
+  </div>
+</div>
+
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+  <div class="w3-display-bottomleft w3-padding-large w3-xlarge">
+    <div> Mariano Espinosa,
+    </div>
+    <div> Marysol Macedo,
+    </div>
+    <div> Sandra Nogales,
+    </div>
+    <div> Isela Rodriguez
+    </div>
+  </div>
+  <div class="w3-display-middle">
+    <h1 class="w3-jumbo w3-animate-top">VPN Servers</h1>
+    <hr class="w3-border-grey" style="margin:auto;width:40%">
+    <p class="w3-large w3-center">05 de Junio de 2020</p>
+  </div>
+  <div class="w3-display-bottomright w3-padding-large">
+    Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+  </div>
+</div>
+
+<!-- Add a background color and large text to the whole page -->
+<div class="w3-sand w3-grayscale w3-large">
+
+<!-- Escenarios Container -->
+<div class="w3-container" id="escenarios">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">ESCENARIOS</span></h5>
+    <p>Para el proyecto creamos un servidor pfsense conectado a la VLAN40 y VLAN101 del lado izquierdo y un servidor opnSense conectado a la VLAN30 y VLAN 201 del lado derecho para la conexión VPN-site-to-site.</p>
+    <p>Del lado izquierdo contamos con dos servidores debian, uno para nuestro web y otro para el dns local.</p>
+    <p>Para el proyecto creamos un servidor pfsense conectado a la VLAN40 y VLAN101 del lado izquierdo y un servidor OpenVPN Access conectado a la VLAN30 y VLAN 201 del lado derecho para la conexión openVPN.</p>
+    <p>Del lado derecho contamos con un servidor debian que cuenta con el servidor web.</p>
+
+  </div>
+</div>
+
+<!-- OpenVPN Container -->
+<div class="w3-container" id="openvpn">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">OpenVPN</span></h5>
+    <p>Para el escenario creamos dos servidores Debian conectados a la VLAN101 del lado izquierdo y a la VLAN 201 del lado derecho.</p>
+    <hr>
+    
+    <p><i>OpenVPN en pfsense</i></p>
+    
+    <p> Creación de máquina virtual pfsense</p>
+    <dd>- Ejecutar VMBOX y seleccionar pestaña File/New </dd>
+    <dd>- Seleccionar BSD y FreeBSD (64 bits) con una memoria de 768 MB y un VDI de 8GB.</dd>
+    <dd>- Seleccionar la máquina pfsense y en la pestaña de Settings, escoger el archivo pfsense de la carpeta ASR-2020 dentro de Storage.</dd>
+    <p></p>
+    <li>Instalar pfsense</li>
+    <dd>- Encender máquina virtual </dd>
+    <dd>- Ingresar con las credenciales de usuario: admin, y contraseña: pfsense</dd>
+    <dd>- Dejar opciones por default y esperar a que la instalación se complete.</dd>
+    <p> Configuración pfsense</p>
+    
+    <li>Ingresar las credenciales de usuario</li>
+    <li>Configurar interfaces </li>
+    <dd>- Agregar la direcciones WAN y LAN</dd>
+    
+    <p> Configuración OpenVPN</p>
+    
+    <li>Ingresar a pfsense web, desde Chrome utilizando la IP LAN configurada anteriormente (10.21.1.3)</li>
+    <p></p>
+    <p>Dentro de la configuración de pfSense, escogeremos la pestaña System > Package Manager</p>
+    <li>Available Packages</li>
+    <dd>- Buscar freeradius3 y openvpn-client-export</dd>
+    <dd>- Instalar los paquetes anteriores</dd>
+    <p></p>
+    <p>Abrir la pestaña Services > FreeRADIUS</p>
+    <li>Interfaces</li>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Interface IP Address: *</dd>
+    <dd>- Port: 1812</dd>
+    <dd>- Interface Type: Authentication</dd>
+    <dd>- IP Version: IPv4</dd>
+    <dd>- Description: Auth Port</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Interface IP Address: *</dd>
+    <dd>- Port: 1813</dd>
+    <dd>- Interface Type: Accounting</dd>
+    <dd>- IP Version: IPv4</dd>
+    <dd>- Description: Acct Port</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    
+    <p></p>
+    <li>NAS/Clients</li>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Client IP Version: IPv4</dd>
+    <dd>- Client Shortname: RadiusServer</dd>
+    <dd>- Client Shared Secret: radiusserver9727!</dd>
+    <dd>- Dejar las otras configuraciones por default</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    
+    <p></p>
+    <li>Users</li>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Username: asr1</dd>
+    <dd>- Password: admred$</dd>
+    <dd>- Dejar las otras configuraciones por default</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Username: asr2</dd>
+    <dd>- Password: admred$</dd>
+    <dd>- Dejar las otras configuraciones por default</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Username: asr3</dd>
+    <dd>- Password: admred$</dd>
+    <dd>- Dejar las otras configuraciones por default</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    
+    <p></p>
+    <p>Abrir la pestaña System > User Manager</p>
+    <li>Authentication Server</li>
+    <dd>- Dar clic en el botón Add+</dd>
+    <dd>- Description name: RadiusServer</dd>
+    <dd>- Type: RADIUS</dd>
+    <dd>- Hostname or IP address: 127.0.0.1</dd>
+    <dd>- Shared Secret: radiusserver9727!</dd>
+    <dd>- Dejar las otras configuraciones por default</dd>
+    <dd>- Dar clic en el botón Save</dd>
+    
+    <p></p>
+    <P>Abrir la pestaña VPN > OpenVPN > Wizard</P>
+    
+    <li>Authentication Backend Type</li>
+    <dd>- Type of Server: RADIUS</dd>
+    <p></p>
+    <li>RADIUS Authentication Server List</li>
+    <dd>- RADIUS Server: RadiusServer</dd>
+    <p></p>
+    <li>Certificate Authority Selection</li>
+    <dd>- Certificate Authority: FreeRADIUS CA</dd>
+    <p></p>
+    <li>Server Certificate Selection</li>
+    <dd>- Certificate: FreeRADIUS Server Certificate</dd>
+    <p></p>
+    <li>General OpenVPN Server Information</li>
+    <dd>- Interface: WAN</dd>
+    <dd>- Protocol: UDP on IPv4 only</dd>
+    <dd>- Local Port: 1194</dd>
+    <dd>- Description: OpenVPN izq</dd>
+    <dd>- DH Parameters Length: 4096 bit</dd>
+    <dd>- Auth Digest Algorithm: SHA384</dd>
+    <dd>- Tunnel Network: 10.21.30.0/24</dd>
+    <dd>- Local Network: 10.21.1.0/24</dd>
+    <dd>- Concurrent Connections: 10</dd>
+    <dd>- DNS Server 1: 10.21.1.33</dd>
+    <dd>- Tunnel Network: 10.21.30.0/24</dd>
+    <dd>- Dar clic en el botón Next</dd>
+    <p></p>
+    <li>Firewall Rule Configuration</li>
+    <dd>- Firewall rule: checked</dd>
+    <dd>- OpenVPN rule: checked</dd>
+    <dd>- Dar clic en el botón Next</dd>
+    <p></p>
+    <dd>- Dar clic en el botón Save</dd>
+    
+    <p></p>
+    <p>Reglas de Firewall para acceso a Internet con los siguientes protocolos: </p>
+    <li>ICMP </li>
+    <dd>- Echo request</dd>
+    <li>FTP </li>
+    <dd>- Puerto: 21</dd>
+    <li>SSH </li>
+    <dd>- Puerto: 22</dd>
+    <li>HTTP </li>
+    <dd>- Puerto: 80</dd>
+    <li>HTTPS </li>
+    <dd>- Puerto: 443</dd>
+    <li>UDP: DNS </li>
+    <dd>- Puerto: 53</dd>
+    <li>NTP </li>
+    <dd>- Puerto: 123</dd>
+    <hr>
+    
+    <p>Descargar los archivos de configuración. VPN > OpenVPN > Client Export y descargar el archivo correspondiente dependiendo del ambiente operativo.</p>
+
+	<p></p>
+	<li>Client Configuration</li>
+	<p>Importar el archivo de configuración del sistema operativo a usar y seguir las instrucciones del software cliente OpenVPN de su preferencia.</p>
+	<p>Comenzar conexión e ingresar asr1, asr2 u asr3 con contraseña admred$</p>
+	<p>Verificar que la conexión de VPN haya sido exitosa con ipconfig o ifconfig y verificar que se tiene una IP 10.21.30.x</p>
+
+     
+  </div>
+</div>
+
+<!-- VPN sitetosite Container -->
+<div class="w3-container" id="sitetosite">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">VPN Site-to-Site</span></h5>
+    <p>Para el proyecto creamos un servidor pfsense conectado a la VLAN 40 y VLAN 101 del lado izquierdo, y un servidor opnsense conectado a la VLAN 30 y VLAN 201 del lado derecho. </p>
+    <p><i>OpnSense</i></p>
+    
+    <p> Creación de máquina virtual opnSense</p>
+    
+    <li>Descargar opnSense</li>
+    <dd>- Ingresar al siguiente <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">sitio</a>  y seleccionar "Download" </dd>
+    <dd>- Seleccionar Architecture: amd64, Image type: dvd, y cualquier Mirror location de US y descargar.</dd>
+    <p></p>
+    <li>Crear nueva máquina en VMBOX</li>
+    <dd>- Ejecutar VMBOX y seleccionar pestaña File/New </dd>
+    <dd>- Seleccionar BSD y FreeBSD (64 bits) con una memoria de 768 MB y un VDI de 8GB.</dd>
+    <dd>- Seleccionar la máquina opnSense y en la pestaña de Settings, escoger el archivo descargado dentro de Storage.</dd>
+    <p></p>
+    <li>Instalar opnSense</li>
+    <dd>- Encender máquina virtual </dd>
+    <dd>- Ingresar con las credenciales de usuario: installer, y contraseña: opnsense</dd>
+    <dd>- Dejar opciones por default y esperar a que la instalación se complete.</dd>
+    
+    <p> Configuración opnSense</p>
+    
+    <li>Ingresar las credenciales de usuario</li>
+    <li>Configurar interfaces </li>
+    <dd>- Agregar la direcciones WAN y LAN</dd>
+    
+    <p> Configuración IPsec site-to-site</p>
+    
+    <li>Ingresar a opnSense web, desde Chrome utilizando la IP LAN configurada anteriormente</li>
+    <p></p>
+    <li>Phase 1 </li>
+    <p></p>
+    <dd>- Dirigirse a VPN/IPSec/Tunnel settings y presionar el botón "+"</dd>
+    <dd>- Sección General Information</dd>
+    <dd>1.  Connection method: default</dd>
+    <dd>2.  Key Exchange version: V2</dd>
+    <dd>3.  Internet Protocol: IPV4</dd>
+    <dd>4.  Interface: WAN</dd>
+    <dd>5.  Remote Gateway: 201.174.75.134</dd>
+    <p></p>
+    <dd>- Sección Phase 1 proposal (authentication)</dd>
+    <dd>1.  Authentication method: Mutual PSK</dd>
+    <dd>2.  My identifier: My IP address</dd>
+    <dd>3.  Peer identifier: Peer IP address</dd>
+    <dd>4.  Pre-shared key: "Ingresar pre-shared key creado por pfSense del lado izquierdo"</dd>
+    <p></p>
+    <dd>- Sección Phase 1 proposal (algorithms)</dd>
+    <dd>1.  Encryption algorithm: AES</dd>
+    <dd>2.  Hash algorithm: SHA512</dd>
+    <dd>3.  DH key group: 14 (2048 bit)</dd>
+    <dd>4.  Lifetime: 28800 sec</dd>
+    <p></p>
+    <dd>- Sección Advanced Options</dd>
+    <dd>1.  Disable Rekey: unchecked</dd>
+    <dd>2.  Disable Reauth: unchecked</dd>
+    <dd>3.  NAT Traversal: Force ****</dd>
+    <dd>4.  Dead Peer Detection: unchecked</dd>
+    <p></p>
+    <dd>- Presionar botón "Save"</dd>
+    <p></p>
+    <li>Phase 2</li>
+    <p></p>
+	<dd>- Presionar el botón "+" que aparece en la phase 1 creada en el paso anterior.</dd>
+    <p></p>
+    <dd>- Sección General Information</dd>
+    <dd>1.  Mode Tunnel IPv4</dd>
+    <dd>2.  Description LAN 1 ******</dd>
+    <p></p>
+    <dd>- Sección Local Network</dd>
+    <dd>1.  Local Network: LAN subnet</dd>
+    <p></p>
+    <dd>- Sección Remote Network</dd>
+    <dd>1.  Type: Network</dd>
+    <dd>2.  Address: 10.21.1.0/24</dd>
+    <p></p>
+    <dd>- Sección Phase 2 proposal (SA/Key Exchange</dd>
+    <dd>1.  Protocol: ESP</dd>
+    <dd>2.  Encryption Algorithms: AES/256</dd>
+    <dd>3.  Hash algorithms: SHA512</dd>
+    <dd>4.  PFS Key group: 14 (2048 bit)</dd>
+    <dd>5.  Lifetime: 3600 sec</dd>
+    <p></p>
+    <dd>- Presionar botón "Save"</dd>
+    <p></p>
+    <dd>- Habilitar IPSec seleccionando la opción Enable IPSec</dd>
+    <p></p>
+    <dd>- Presionar botón "Save"</dd>
+    <p></p>
+    <dd>- Presionar botón "Apply changes"</dd>
+    
+    <p> Configuración de Firewall</p>
+    <li>WAN</li>
+    <p></p>
+    <dd>- ESP</dd>
+    <dd>1.  Protocolo: IPv4 ESP</dd>
+    <dd>2.  Source: any</dd>
+    <dd>3.  Destination: WAN address</dd>
+    <p></p>
+    <dd>- ISAKMP</dd>
+    <dd>1.  Protocolo: IPv4 UDP</dd>
+    <dd>2.  Source: any</dd>
+    <dd>3.  Destination: WAN address</dd>
+    <dd>4.  Destination port: 500</dd>
+    <p></p>
+    <dd>- IPSec NAT -T</dd>
+    <dd>1.  Protocolo: IPv4 ESP</dd>
+    <dd>2.  Source: any</dd>
+    <dd>3.  Destination: WAN address</dd>
+    <dd>4.  Destination port: 500</dd>
+
+    <p></p>
+    <li>LAN</li>
+    <dd>- SNMP</dd>
+    <dd>1. IPv4</dd>
+    <dd>2. Protocolo: TCP/UDP</dd>
+    <dd>3. Source: LAN Address</dd>
+    <dd>4. Destination: SNMPs(alias)</dd>
+    <dd>5. Port: 161</dd>
+
+    <p></p>
+    <li>IPsec</li>
+    <dd>- HTTP to LAN1</dd>
+    <dd>1. Action: out</dd>
+    <dd>2. IPv4</dd>
+    <dd>3. Protocolo: TCP</dd>
+    <dd>4. Source: LAN net</dd>
+    <dd>5. Destination: LAN1</dd>
+    <dd>6. Port: 80</dd>
+
+    <p></p>
+    <dd>- HTTP to LAN1</dd>
+    <dd>1. Action: out</dd>
+    <dd>2. IPv4</dd>
+    <dd>3. Protocolo: TCP</dd>
+    <dd>4. Source: LAN1</dd>
+    <dd>5. Destination: LAN net</dd>
+    <dd>6. Port: 80</dd>
+
+    <p></p>
+    <dd>- ICMP to LAN1</dd>
+    <dd>1. Action: out</dd>
+    <dd>2. IPv4</dd>
+    <dd>3. Type: echo request</dd>
+    <dd>4. Source: LAN1</dd>
+    <dd>5. Destination: LAN1</dd>
+
+    <p></p>
+    <dd>- ICMP to LAN1</dd>
+    <dd>1. Action: out</dd>
+    <dd>2. IPv4</dd>
+    <dd>3. Type: echo request</dd>
+    <dd>4. Source: LAN net</dd>
+    <dd>5. Destination: LAN1</dd>
+
+    <p></p>
+    <dd>- Block to LAN1</dd>
+    <dd>1. Action: out</dd>
+    <dd>2. IPv4 + 6</dd>
+    <dd>3. Any a todas las demas opciones</dd>
+
+    <p></p>
+    <li>Floating</li>
+    <dd>- In to Out</dd>
+    <dd>1. Action: </dd>
+    <dd>2. Interface: LAN</dd>
+    <dd>3. Protocol: IPv4</dd>
+    <dd>4. Source: LAN1</dd>
+    <dd>5. Destination: LAN net</dd>
+
+    <p> Configuración SNMP</p>
+    <li>System Firmware: Plugins</li>
+    <li>Actualizar Packages y Package Manager. Se reiniciará la VM.</li>
+    <li>Ingresar nuevamente las credenciales de root</li>
+    <li>System Firmware: Plugins</li>
+    <li>Instalar os-net-snmp</li>
+    <li>Cerrar sesión y volver a ingresar para habilitar el área de configuración</li>
+    <li>Firewall: Aliases</li>
+    <dd>- Crear alias para los equipos de monitoreo: SNPMs</dd>
+    <li>Firewall: LAN</li>
+    <dd>- Crear nueva regla</dd>
+    <dd>- TCP/IP Version: IPv4</dd>
+    <dd>- Protocol: TCP/UDP</dd>
+    <dd>- Source: LAN Address</dd>
+    <dd>- Destination: SNPMs</dd>
+    <dd>- Destination Port: SNPM</dd>
+    <dd>- Apply changes</dd>
+    <li>Services: Net-SNMP</li>
+    <dd>- Enable SNPM Service: checked</dd>
+    <dd>- SNMP Location: DER 171</dd>
+    <dd>- SNMP contact: Marysol mvidrio@cetys.edu.mx</dd>
+    <dd>- SNMP Community: community string</dd>
+    <dd>- Layer 3 Visibility: checked</dd>
+    
+    <p></p>
+    <p><i>pfSense</i></p>
+    
+    <p> Creación de máquina virtual pfsense</p>
+    <li>Descargar pfsense</li>
+    <dd>- Ingresar al siguiente <a href="https://www.pfsense.org/download/" target="_blank">sitio</a>  y seleccionar "Download" </dd>
+    <dd>- Seleccionar Architecture: amd64, Image type: dvd, y cualquier Mirror location de US y 		descargar.</dd>
+    
+    <p></p>
+    <li>Crear nueva máquina en VMBox</li>
+    <dd>- Ejecutar VM VirtualBox y seleccionar pestaña Maquina/New</dd>
+    <dd>- Ingresar Nombre, Type: other, Version: other/Unknown (64-bit), Memory size: 1024MB, 		Create a virtual hard disk now, VDI, Dynamically allocated, 8GB</dd>
+    <dd>- Seleccionar VM recién creada e ir a Settings</dd>
+    <dd>- Storage: selecciona empty; después botón azul en sección de atributos, elegir la opción 	de Choose a disk file… y elegir el ISO que se descargó de PFsense</dd>
+    <dd>- Network: Adaptador 1, Bridged Adapter, VLAN 40, Intel PRO/1000 T server. Cambiar el MAC 	address.Adaptador 2, Bridged Adapter, VLAN101, Intel PRO/1000 T server. Cambiar el MAC 			address</dd>
+    
+    <p></p>
+    <li>Instalar pfSense</li>
+    <dd>- Prender pfsense VM con el botón Start</dd>
+    <dd>- Dejar las opciones de default y presionar ENTER en la opción "Accept" de la sección de 		pfsense Installer.</dd>
+    <dd>- Aceptar  opciones por default hasta que salga complete seleccionar "Reboot" y esperar que 	inicie de nuevo el servicio.</dd>
+    <dd>- PFsense inicia mostrando un menú de 17 opciones de 0-16. En la consola mostrará los Ips 	asignados a las interfaces de red por el servicio de DHCP del router al que se encuentra 		conectado</dd>
+    <p></p>
+    <li>Configuración inicial</li>
+    <dd>- Definir la dirección IP correspondiente a la interfaz LAN, utilizando la opción 2 seguido 		de la opción 2</dd>
+    <dd>- Ingresar la IP:  10.21.1.1/24. No definir IPv6 ni asignar gateways.</dd>
+    <dd>- No activar DHCP en ninguna interfaz http como protocolo de acceso a la consola Web.</dd>
+    <dd>- Ingresar a la administración de pfsense desde un navegador web utilizando la dirección IP 	LAN previamente definida con las credenciales: admin/pfsense y cambiar la contraseña. a admin y 	con la contraseña admlnx@ en System/user Manager/pencil/Password"admlnx@"/Confirmar 			contraseña y guardar.</dd>
+    <p></p>
+    <li>Configuración IPsec Site to Site</li>
+    <dd>- Ingresar a PFsense desde Chrome con la dirección IP definida previamente.</dd>
+    <dd>- Hacer clic en VPN>IPsec</dd>
+    <dd>- PHASE 1 y PHASE 2 necesitan ser configuradas para este túnel IPsec.</dd>
+    <dd>- + Add P1 > PHASE 1:</dd>
+    <dd>1. + Add P1 </dd>
+    <dd>2. Disabled > No seleccionarlo. </dd>
+    <dd>3. Key Exchange Version > IKEv2 </dd>
+    <dd>4. Internet Protocol> IPV4 </dd>
+    <dd>5. Interface> WAN </dd>
+    <dd>6. Remote Gateway > 158.122.66.1</dd>
+    <dd>7. Description > WANIP-VPNsite-to-site-IZQ
+</dd>
+    <dd>8. Authentication Method > Mutual PSK </dd>
+    <dd>9. My Identifier > My IP address</dd>
+    <dd>10. Peer Identifier > Peer IP address</dd>
+    <dd>11. Pre-Shared Key > </dd>
+    <dd>12. Generar una llave, que se usará para ambos lados y pegarla en este campo.</dd>
+    <dd>13. + Add Algorithm</dd>
+    <dd>14. Encryption Algorithm > AES</dd>
+    <dd>15. Key Length > 256 bits</dd>
+    <dd>16. HASH > SHA512</dd>
+    <dd>17. DC Group > 14(2048bits)</dd>
+    <dd>18. Lifetime (seconds) > 28800</dd>
+    <dd>19. NAT-Transversal > AUTO </dd>
+    <dd>20. click en el botón de SAVE </dd>
+    <dd>- + Add P2 > PHASE 2:</dd>
+    <dd>1. Mode > Tunnel IPv4</dd>
+    <dd>2. Local Network > LAN subnet</dd>
+    <dd>3. Remote Network</dd>
+    <dd>i. Network</dd>
+    <dd>ii. address > 10.22.1.0 </dd>
+    <dd>iii. Description > Local-LAN-DER
+</dd>
+    <dd>4. Protocol > ESP </dd>
+    <dd>5. Encryption Algorithm > check box AES
+ > 256 bits
+</dd>
+    <dd>6. Hash Algorithm > check box SHA512
+</dd>
+    <dd>7. PFS key group > 14(2048 group)
+</dd>
+    <dd>8. Lifetime 3600
+</dd>
+    <dd>9. Automatically ping host > 10.22.1.90</dd>
+    <dd>10. Click en el botón de SAVE </dd>
+    <p></p>
+    <li>Configuración Firewall </li>
+    <dd>a. Firewall > RULES > WAN</dd>
+    <dd>- + Add</dd>
+    <dd>1. Interface > WAN</dd>
+    <dd>2. Address Family > IPv4</dd>
+    <dd>3. Protocol > UDP</dd>
+    <dd>4. Destination  > WAN address</dd>
+    <dd>5. Destination Port > ISAKMP (500)</dd>
+    <dd>6. Click en el botón de Save</dd>
+    <dd>7. Click > Apply Changes</dd>
+    <dd>-+ Add</dd>
+
+    <dd>a. Firewall > RULES > WAN</dd>
+    <dd>- + Add</dd>
+    <dd>1. Interface > WAN</dd>
+    <dd>2. Address Family > IPv4</dd>
+    <dd>3. Protocol > UDP</dd>
+    <dd>4. Destination  > WAN address</dd>
+    <dd>5. Destination Port > IPsec NAT-T</dd>
+    <dd>6. Click en el botón de Save</dd>
+    <dd>7. Click > Apply Changes</dd>
+    <dd>-+ Add</dd>
+    <dd>a. Firewall > RULES > WAN</dd>
+    <dd>- + Add</dd>
+    <dd>1. Interface > WAN</dd>
+    <dd>2. Address Family > IPv4</dd>
+    <dd>3. Protocol > ESP</dd>
+    <dd>4. Destination  > WAN address</dd>
+    <dd>5. Destination Port > any</dd>
+    <dd>6. Click en el botón de Save</dd>
+    <dd>7. Click > Apply Changes</dd>
+
+    <dd>- Firewall> RULES > LAN </dd>
+    <dd>1. + Add</dd>
+    <dd>2. Interface > LAN</dd>
+    <dd>3. Protocol: UDP</dd>
+    <dd>4. Source > Single host or alias</dd>
+    <dd>5. Destination > any</dd>
+    <dd>6. Destination Port > SNMP</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <dd>1. + Add</dd>
+    <dd>2. Interface > LAN</dd>
+    <dd>3. Address Family > IPv4</dd>
+    <dd>4. Protocol: ICMP: echo request</dd>
+    <dd>5. Source: LAN net</dd>
+    <dd>6. Destination: LAN2 (Alias-> 10.22.1.0)</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <dd>1. + Add</dd>
+    <dd>2. Interface > LAN</dd>
+    <dd>3. Address Family > IPv4</dd>
+    <dd>4. Protocol: TCP</dd>
+    <dd>5. Source: LAN net</dd>
+    <dd>6. Destination: LAN2 (Alias-> 10.22.1.0)</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+
+	<dd>- Firewall> RULES > IPSec </dd>
+    <dd>1. + Add</dd>
+    <dd>1. Interface: LAN</dd>
+    <dd>2. Address Family: IPv4</dd>
+    <dd>3. Protocol: ICMP: echo request</dd>
+    <dd>4. Source: Single Host or alias: LAN2</dd>
+    <dd>5. Destination: LAN net</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <dd>1. + Add</dd>
+    <dd>1. Interface: LAN</dd>
+    <dd>2. Address Family: IPv4</dd>
+    <dd>3. Protocol: TCP</dd>
+    <dd>4. Source: LAN net</dd>
+    <dd>5. Destination: LAN2 (Alias 10.22.1.0)</dd>
+    <dd>3. Destination Port: 80(HTTP)</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <dd>1. + Add</dd>
+    <dd>1. Interface: LAN</dd>
+    <dd>2. Address Family: IPv4</dd>
+    <dd>3. Protocol: TCP</dd>
+    <dd>4. Source: LAN2 (Alias 10.22.1.0)</dd>
+    <dd>5. Destination: LAN net</dd>
+    <dd>3. Destination Port: 80(HTTP)</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <dd>1. + Add</dd>
+    <dd>1. Interface: LAN</dd>
+    <dd>2. Address Family: IPv4</dd>
+    <dd>3. Protocol: ICMP: echo request</dd>
+    <dd>4. Source: LAN net</dd>
+    <dd>5. Destination: LAN2</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <p></p>
+    <li>Configuración SNMP </li>
+    <dd>a. Services > SNMP </dd>
+    <dd>1. Enable > check box</dd>
+    <dd>2. Polling Port > 161</dd>
+    <dd>3. System Location > pfsense red 1</dd>
+    <dd>4. System Contact > alejandro.andrade@cetys.edu.mx</dd>
+    <dd>5. Read Community String > public-asr</dd>
+    <dd>6. SNMP Modules > checkbox > check all</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+    <p></p>
+    <li>Configuración  Firewall SNMP </li>
+    <dd>a. Firewall > Aliases > IP </dd>
+    <dd>1. Name > managers</dd>
+    <dd>2. Description > monitoreo de redes</dd>
+    <dd>3. Type > Host(s)</dd>
+    <dd>4. IP  > 10.21.1.99</dd>
+    <dd>5. + Add Host >IP > 10.21.1.32</dd>
+    <dd>a. Firewall > Rules > LAN </dd>
+    <dd>1. Interface > LAN</dd>
+    <dd>2. Address Family > IPv4</dd>
+    <dd>3. Protocol UDP</dd>
+    <dd>4. Source > LAN net</dd>
+    <dd>5. Destination > Single host or alias > managers</dd>
+    <dd>6. Destination Port Range > SNMP</dd>
+    <dd>7. Click en el botón de Save</dd>
+    <dd>8. Click > Apply Changes</dd>
+
+  </div>
+</div>
+
+<!-- Referencias Container -->
+<div class="w3-container" id="referencias">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Referencias</span></h5>
+    
+    <p>Lawrence Systems. (2019, Mayo 31). How To Configure FreeRadius on pfsense and static assign IP addresses to VPN users [Archivo de video]. Recuperado de <a href="https://www.youtube.com/watch?v=jEK-O3U3gdg"target="_blank">Youtube Lawrence Systems</a> </p>
+    
+    <p>Lawrence Systems. (2017, Noviembre 5). How To Setup OpenVPN For Remote Access On pfsense [Archivo de video]. Recuperado de <a href="https://www.youtube.com/watch?v=7rQ-Tgt3L18"target="_blank">Youtube Lawrence Systems</a> </p>
+    
+    <p>Netgate Docs. (2020). Configuring a Site-to-Site IPsec VPN. Recuperado de <a href="https://docs.netgate.com/pfsense/en/latest/services/snmp-daemon.html"target="_blank">Netgate</a> </p>
+
+    <p>Netgate Docs. (2020). Configuring the SNMP Daemon. Recuperado de <a href="https://docs.netgate.com/pfsense/en/latest/vpn/ipsec/configuring-a-site-to-site-ipsec-vpn.html"target="_blank">Netgate</a> </p>
+    
+	<p>Opnsense. (2019). Initial Installation & Configuration. Recuperado de
+    <a href="https://docs.opnsense.org/manual/install.html"target="_blank">opnSense</a>
+
+    <p>Opnsense. (2019). Setup IPsec site to site tunnel. Recuperado de
+    <a href="https://docs.opnsense.org/manual/how-tos/ipsec-s2s.html"target="_blank">opnSense</a>
+   </div>
+
+</div>
+
+<!-- <a href="https://docs.netgate.com/pfsense/en/latest/vpn/ipsec/configuring-a-site-to-site-ipsec-vpn.html"target="_blank">Netgate</a> -->
+
+
+</body>
+</html>
